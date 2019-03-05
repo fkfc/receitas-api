@@ -1,12 +1,24 @@
 package com.fkfc.receitasapi.service;
 
+import com.fkfc.receitasapi.dto.Receita;
+import com.fkfc.receitasapi.dto.ReceitaFilter;
+import com.fkfc.receitasapi.handler.FilterReceitaHandler;
+import com.fkfc.receitasapi.handler.GetReceitaHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+
 
 @RestController
 public class ReceitasGetController {
+
+    @Autowired
+    FilterReceitaHandler filterReceitaHandler;
+
+    @Autowired
+    GetReceitaHandler getReceitaHandler;
+
 
     @CrossOrigin
     @RequestMapping("/")
@@ -15,14 +27,21 @@ public class ReceitasGetController {
     }
 
     @CrossOrigin
+    @RequestMapping(value = "/get/{id}", method = {RequestMethod.GET})
+    public Receita getReceitaById(@PathVariable("id") Integer id) {
+        return getReceitaHandler.getReceitaById(id);
+    }
+
+
+    @CrossOrigin
     @RequestMapping(value = "/get", method = {RequestMethod.GET})
-    public String getReceita(
-            @RequestParam(value = "nome") String nome,
+    public List<Receita> getReceita(
+            @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "categorias", required = false) List<String> categorias,
             @RequestParam(value = "ingredientes", required = false) List<String> ingredientes
     ) {
-        System.out.println(nome);
-        return "GET receita";
+        ReceitaFilter filter = new ReceitaFilter(nome, ingredientes, categorias);
+        return filterReceitaHandler.handleGetReceita(filter);
     }
 
 

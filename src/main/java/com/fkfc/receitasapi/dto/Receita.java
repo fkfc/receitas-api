@@ -6,9 +6,9 @@ import java.util.List;
 public class Receita {
     protected Integer id;
     protected String nome;
-    protected List<String> categorias = new ArrayList<>();
-    protected List<Ingrediente> ingredientes = new ArrayList<>();
-    protected List<Metadado> metadados = new ArrayList<>();
+    protected List<String> categorias = null;
+    protected List<Ingrediente> ingredientes = null;
+    protected List<Metadado> metadados = null;
     protected String modoPreparo;
 
     public Receita() {

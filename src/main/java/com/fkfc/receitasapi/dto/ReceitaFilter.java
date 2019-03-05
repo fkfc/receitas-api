@@ -17,6 +17,15 @@ public class ReceitaFilter {
         this.categorias = categorias;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "nome='" + nome + '\'' +
+                ", ingredientes=" + ingredientes +
+                ", categorias=" + categorias +
+                '}';
+    }
+
     public String getNome() {
         return nome;
     }
@@ -40,5 +49,7 @@ public class ReceitaFilter {
     public void setCategorias(List<String> categorias) {
         this.categorias = categorias;
     }
+
+
 
 }
