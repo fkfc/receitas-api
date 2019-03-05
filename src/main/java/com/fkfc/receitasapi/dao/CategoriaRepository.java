@@ -41,4 +41,15 @@ public class CategoriaRepository {
         }
     }
 
+    public String getById(Integer categoriaId) {
+        try {
+            return dslContext
+                    .selectFrom(CATEGORIA)
+                    .where(CATEGORIA.ID.eq(categoriaId))
+                    .fetchOne().getNome();
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
 }

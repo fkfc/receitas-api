@@ -40,4 +40,15 @@ public class IngredienteRepository {
             return null;
         }
     }
+
+    public String getById(Integer ingredienteId) {
+        try {
+            return dslContext
+                    .selectFrom(INGREDIENTE)
+                    .where(INGREDIENTE.ID.eq(ingredienteId))
+                    .fetchOne().getNome();
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
 }

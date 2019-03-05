@@ -1,17 +1,21 @@
 package com.fkfc.receitasapi.dao;
 
+import com.fkfc.generatedsources.entity.tables.pojos.ReceitaMetadado;
+import com.fkfc.generatedsources.entity.tables.pojos.ReceitaCategoria;
+import com.fkfc.generatedsources.entity.tables.pojos.ReceitaIngrediente;
 import com.fkfc.receitasapi.dto.Ingrediente;
 import com.fkfc.receitasapi.dto.Metadado;
 import com.fkfc.receitasapi.dto.Receita;
 import com.fkfc.receitasapi.dto.ReceitaFilter;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.SelectConditionStep;
-import org.jooq.SelectWhereStep;
+import org.jooq.*;
+import org.jooq.impl.DSL;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -84,6 +88,72 @@ public class ReceitaRepository {
         }
     }
 
+
+    Receita getById(Integer receitaId) {
+        Receita receita = new Receita();
+
+        //Recupera a tabela 'Receita'
+        BeanUtils.copyProperties(
+            receita,
+            dslContext
+                    .selectFrom(RECEITA)
+                    .where(RECEITA.ID.eq(receitaId))
+                    .fetchOne()
+                    .into(com.fkfc.generatedsources.entity.tables.pojos.Receita.class)
+        );
+
+        //Adiciona os ingredientes
+        List<ReceitaIngrediente> receitaIngredientes =
+            dslContext
+                    .selectFrom(RECEITA_INGREDIENTE)
+                    .where(RECEITA_INGREDIENTE.RECEITA_ID.eq(receitaId))
+                    .fetch()
+                    .into(ReceitaIngrediente.class);
+        for (ReceitaIngrediente receitaIngrediente: receitaIngredientes) {
+            receita.getIngredientes().add(
+                new Ingrediente(
+                    receitaIngrediente.getOrdem(),
+                    ingredienteRepository.getById(receitaIngrediente.getIngredienteId()),
+                    receitaIngrediente.getQuantidade()
+                )
+            );
+        }
+
+        //Adiciona as categorias
+        List<ReceitaCategoria> receitaCategorias =
+            dslContext
+                .selectFrom(RECEITA_CATEGORIA)
+                .where(RECEITA_CATEGORIA.RECEITA_ID.eq(receitaId))
+                .fetch()
+                .into(ReceitaCategoria.class);
+        for (ReceitaCategoria receitaCategoria: receitaCategorias) {
+            receita.getCategorias().add(
+                categoriaRepository.getById(receitaCategoria.getCategoriaId())
+            );
+        }
+
+        //Adiciona os metadados
+        List<ReceitaMetadado> receitaMetadados =
+            dslContext
+                .selectFrom(RECEITA_METADADO)
+                .where(RECEITA_METADADO.RECEITA_ID.eq(receitaId))
+                .fetch()
+                .into(ReceitaMetadado.class);
+        for (ReceitaMetadado receitaMetadado: receitaMetadados) {
+            receita.getMetadados().add(
+                new Metadado(
+                        metadadoRepository.getById(receitaMetadado.getMetadadoId()),
+                        receitaMetadado.getValor()
+                )
+            );
+        }
+
+        //retorna a instância
+        return receita;
+
+    }
+
+    //Retorna uma lista de receitas filtrada pelo parâmetro filter
     List<Receita> getByFilter(ReceitaFilter filter) {
         SelectWhereStep query = dslContext.
                                     select()
@@ -97,26 +167,42 @@ public class ReceitaRepository {
                                                     .on(RECEITA.ID.eq(RECEITA_METADADO.RECEITA_ID))
 
                                         );
-        int filterFieldCount = 0;
+
+        //Adiciona condições do filtro
+        Collection<Condition> whereConditions = new ArrayList<>();
+        //Nome
         if (filter.getNome() != null && filter.getNome().length() > 0) {
-            filterFieldCount++;
-            query.where(RECEITA.NOME.eq(filter.getNome());
+            whereConditions.add(RECEITA.NOME.eq(filter.getNome()));
         }
-        if (filter.getCategorias() != null && filter.getCategorias().size() > 0) {
-            filterFieldCount++;
+        //Categoria
+        if (filter.getCategorias() != null) {
             for (String categoria: filter.getCategorias()) {
                 Integer categoriaId = categoriaRepository.getByNome(categoria);
-                query.where(RECEITA_CATEGORIA.CATEGORIA_ID.eq(categoriaId));
+                whereConditions.add(RECEITA_CATEGORIA.CATEGORIA_ID.eq(categoriaId));
+
             }
         }
-        //TODO INGREDIENTE
+        //Ingredientes
+        if (filter.getIngredientes() != null) {
+            for (String ingrediente: filter.getIngredientes()) {
+                Integer ingredienteId = ingredienteRepository.getByNome(ingrediente);
+                whereConditions.add(RECEITA_INGREDIENTE.INGREDIENTE_ID.eq(ingredienteId));
+            }
+        }
 
-        List<Integer> receitaIds = query.fetch().getValues(RECEITA.ID);
+        //Adiciona as condições do filtro à query
+        query.where(DSL.and(whereConditions));
 
-        //TODO GET BY ID
+        //Recupera os IDs das receitas que satisfazem as condições da busca
+        List<Integer> receitaIds = query.fetch(RECEITA.ID, Integer.class);
 
+        //Instancia cada uma das receitas que satisfazem a busca
+        List<Receita> receitas = new ArrayList<>();
+        for (Integer receitaId: receitaIds) {
+            receitas.add(this.getById(receitaId));
+        }
 
-
+        return receitas;
     }
 
 }

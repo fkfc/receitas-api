@@ -41,5 +41,16 @@ public class MetadadoRepository {
         }
     }
 
+    public String getById(Integer metadadoId) {
+        try {
+            return dslContext
+                    .selectFrom(METADADO)
+                    .where(METADADO.ID.eq(metadadoId))
+                    .fetchOne().getNome();
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
 
 }

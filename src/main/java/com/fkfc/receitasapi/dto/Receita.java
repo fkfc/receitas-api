@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Receita {
+    protected Integer id;
     protected String nome;
     protected List<String> categorias = new ArrayList<>();
     protected List<Ingrediente> ingredientes = new ArrayList<>();
@@ -70,5 +71,13 @@ public class Receita {
 
     public void setModoPreparo(String modoPreparo) {
         this.modoPreparo = modoPreparo;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
