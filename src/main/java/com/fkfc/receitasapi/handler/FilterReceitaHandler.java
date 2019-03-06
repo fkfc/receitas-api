@@ -17,6 +17,10 @@ public class FilterReceitaHandler {
     @Autowired
     ReceitaRepository receitaRepository;
 
+    public FilterReceitaHandler(ReceitaRepository receitaRepository) {
+        this.receitaRepository = receitaRepository;
+    }
+
     /**
      * Recupera no repositório uma lista de receitas que satisfazem o filtro fornecido
      * @param filter Filtro de busca

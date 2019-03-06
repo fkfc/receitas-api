@@ -14,6 +14,10 @@ public class CreateReceitaHandler {
     @Autowired
     ReceitaRepository receitaRepository;
 
+    public CreateReceitaHandler(ReceitaRepository receitaRepository) {
+        this.receitaRepository = receitaRepository;
+    }
+
     /**
      * Informa o repositório para cadastrar uma nova receita
      * @param receita DTO da nova receita

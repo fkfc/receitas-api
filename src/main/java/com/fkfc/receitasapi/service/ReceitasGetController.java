@@ -21,6 +21,11 @@ public class ReceitasGetController {
     @Autowired
     GetReceitaHandler getReceitaHandler;
 
+    public ReceitasGetController(FilterReceitaHandler filterReceitaHandler, GetReceitaHandler getReceitaHandler) {
+        this.filterReceitaHandler = filterReceitaHandler;
+        this.getReceitaHandler = getReceitaHandler;
+    }
+
     /**
      * Endpoint ROOT para verificar se o serviço está em execução
      * @return String "Receitas-API está em execução"

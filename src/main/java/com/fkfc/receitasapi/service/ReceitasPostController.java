@@ -14,6 +14,10 @@ public class ReceitasPostController {
     @Autowired
     CreateReceitaHandler createReceitaHandler;
 
+    public ReceitasPostController(CreateReceitaHandler createReceitaHandler) {
+        this.createReceitaHandler = createReceitaHandler;
+    }
+
     /**
      * Cadastra uma nova receita
      * @param receita Dados da nova receita

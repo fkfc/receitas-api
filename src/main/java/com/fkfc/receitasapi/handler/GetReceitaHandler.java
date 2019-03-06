@@ -14,6 +14,10 @@ public class GetReceitaHandler {
     @Autowired
     ReceitaRepository receitaRepository;
 
+    public GetReceitaHandler(ReceitaRepository receitaRepository) {
+        this.receitaRepository = receitaRepository;
+    }
+
     /**
      * Recupera no repositório uma receita especificada pelo número de ID
       * @param id Número identificador da receita a ser recuperada

@@ -40,7 +40,7 @@ POST
 GET - Filtro
 --------------
 *Recupera uma lista de receitas filtradas por um mais campos.*\
-**URL:** localhost:3000/get?nome=receita&categorias=categoria1,categoria2&ingredientes=ingrediente3\
+**URL:** localhost:3000/get?nome=receita&categorias=categoria1,categoria2&ingredientes=ingrediente2\
 **Campos:**
 
 |Nome do campo  | Descrição                                                                              |
