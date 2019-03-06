@@ -17,10 +17,10 @@ API CRUD de Receitas. Projeto Java utilizando Maven
 
 POST
 -------
-*Insere uma nova receita*\
+*Insere uma nova receita*
 
 **URL**: localhost:3000/post\
-**Body do POST**:\
+**Body do POST**:
 ```json
 {
     "nome": "receita",
@@ -41,7 +41,7 @@ GET - Filtro
 --------------
 *Recupera uma lista de receitas filtradas por um mais campos.*\
 **URL:** localhost:3000/get?nome=receita&categorias=categoria1,categoria2&ingredientes=ingrediente3\
-**Campos:**\
+**Campos:**
 
 |Nome do campo  | Descrição                                                                              |
 | --------------------- | ------------------------------------------------------------ |
@@ -52,7 +52,7 @@ GET - Filtro
 GET - Único item
 ---------------------
 *Recupera um único item identificado pelo ID especificado na URL.*\
-**URL:**  localhost:3000/get/3\
+**URL:**  localhost:3000/get/3
 
 
 
@@ -61,7 +61,7 @@ PATCH
 ---------
 *Altera campos específicos de uma receita já cadastrada. O ID da receita é especificado na URL.*\
 **URL:** localhost:3000/patch/3\
-**Body do PATCH:**\
+**Body do PATCH:**
 ```json
 {
 	"nome":"novoNome",
