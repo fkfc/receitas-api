@@ -1,10 +1,10 @@
 # receitas-api
 API CRUD de Receitas. Projeto Java utilizando Maven
 
-##Documentação Interna
+## Documentação Interna
 - Documentação gerada pelo Javadoc se encontra no diretório **/doc**.
 
-##Configurações
+## Configurações
 - Verificar as configurações no arquivo application.properties, em especial o endereço, nome de usuário e senha do banco de dados
 - As classes de banco de dados (JOOQ) são geradas automaticamente ao executar *maven install*
 - Criar executável JAR:
@@ -13,14 +13,14 @@ API CRUD de Receitas. Projeto Java utilizando Maven
 	- maven package
 
 
-##Exemplos de uso
+## Exemplos de uso
 
 POST
 -------
-*Insere uma nova receita*
+*Insere uma nova receita*\
 
-**URL**: localhost:3000/post
-**Body do POST**:
+**URL**: localhost:3000/post\
+**Body do POST**:\
 ```json
 {
     "nome": "receita",
@@ -39,9 +39,9 @@ POST
 
 GET - Filtro
 --------------
-*Recupera uma lista de receitas filtradas por um mais campos.*
-**URL:** localhost:3000/get?nome=receita&categorias=categoria1,categoria2&ingredientes=ingrediente3
-**Campos:**
+*Recupera uma lista de receitas filtradas por um mais campos.*\
+**URL:** localhost:3000/get?nome=receita&categorias=categoria1,categoria2&ingredientes=ingrediente3\
+**Campos:**\
 
 |Nome do campo  | Descrição                                                                              |
 | --------------------- | ------------------------------------------------------------ |
@@ -51,17 +51,17 @@ GET - Filtro
 
 GET - Único item
 ---------------------
-*Recupera um único item identificado pelo ID especificado na URL.*
-**URL:**  localhost:3000/get/3
+*Recupera um único item identificado pelo ID especificado na URL.*\
+**URL:**  localhost:3000/get/3\
 
 
 
 
 PATCH
 ---------
-*Altera campos específicos de uma receita já cadastrada. O ID da receita é especificado na URL.*
-**URL:** localhost:3000/patch/3
-**Body do PATCH:**
+*Altera campos específicos de uma receita já cadastrada. O ID da receita é especificado na URL.*\
+**URL:** localhost:3000/patch/3\
+**Body do PATCH:**\
 ```json
 {
 	"nome":"novoNome",
@@ -71,8 +71,8 @@ PATCH
 
 PUT
 ------
-*Substitui todos os campos de uma receita já cadastrada. O ID da receita é especificado na URL.*
-**URL**: localhost:3000/put/3
+*Substitui todos os campos de uma receita já cadastrada. O ID da receita é especificado na URL.*\
+**URL**: localhost:3000/put/3\
 **Body do PUT:**
 ```json
 {
@@ -92,5 +92,5 @@ PUT
 
 DELETE
 ----------
-*Exclui uma receita especificada pelo ID na URL.*
+*Exclui uma receita especificada pelo ID na URL.*\
 **URL:** localhost:3000/delete/3
