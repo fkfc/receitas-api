@@ -1,5 +1,10 @@
 package com.fkfc.receitasapi.dto;
 
+/**
+ * Modelo anêmico de um metadado de uma receita.
+ * Inclui informação do nome e valor específico da receita.
+ * Inclui método para representação em String no formato JSON.
+ */
 public class Metadado {
     protected String nome;
     protected String valor;

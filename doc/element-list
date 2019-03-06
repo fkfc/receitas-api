@@ -1,0 +1,9 @@
+com.fkfc.generatedsources.entity
+com.fkfc.generatedsources.entity.tables
+com.fkfc.generatedsources.entity.tables.pojos
+com.fkfc.generatedsources.entity.tables.records
+com.fkfc.receitasapi
+com.fkfc.receitasapi.dao
+com.fkfc.receitasapi.dto
+com.fkfc.receitasapi.handler
+com.fkfc.receitasapi.service

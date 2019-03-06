@@ -3,6 +3,10 @@ package com.fkfc.receitasapi.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Modelo anêmico do filtro utilizado para buscar receitas.
+ * Inclui método para representação em String no formato JSON.
+ */
 public class ReceitaFilter {
     protected String nome = null;
     protected List<String> ingredientes = new ArrayList<>();

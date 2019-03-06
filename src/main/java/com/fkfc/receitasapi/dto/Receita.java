@@ -1,8 +1,13 @@
 package com.fkfc.receitasapi.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Modelo anêmico de uma receita.
+ * Inclui informações do ID (preenchido quando busca na base de dados), nome, categorias e modo de preparo.
+ * Referencia outros modelos: Metadados e Ingredientes.
+ * Inclui método para representação em String no formato JSON.
+ */
 public class Receita {
     protected Integer id;
     protected String nome;

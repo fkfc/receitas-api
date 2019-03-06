@@ -1,5 +1,10 @@
 package com.fkfc.receitasapi.dto;
 
+/**
+ * Modelo anêmico de um ingrediente utilizado em uma receita.
+ * Inclui informações da ordem de utilização/exibição, nome e quantidade utilizada.
+ * Inclui método para representação em String no formato JSON.
+ */
 public class Ingrediente {
     protected Integer ordem;
     protected String nome;

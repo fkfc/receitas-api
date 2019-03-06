@@ -10,7 +10,6 @@ import com.fkfc.receitasapi.dto.Receita;
 import com.fkfc.receitasapi.dto.ReceitaFilter;
 import org.jooq.*;
 import org.jooq.impl.DSL;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Repositório de receitas. Abstrai a utilização do banco de dados.
+ */
 @Repository
 @Transactional
 public class ReceitaRepository {
@@ -43,6 +45,10 @@ public class ReceitaRepository {
     MetadadoRepository metadadoRepository;
 
 
+    /**
+     * Salva uma nova receita no banco de dados
+     * @param receita Instância (DTO) da nova receita
+     */
     public void saveReceita(Receita receita) {
 
         //Salva a tabela da Receita
@@ -57,7 +63,11 @@ public class ReceitaRepository {
         setMetadados(receita, receitaId);
     }
 
-    //Associa a receita às categorias, adicionando novas quando necessário
+    /**
+     * Associa a receita às categorias, adicionando novas quando necessário
+     * @param receita Instância DTO da receita
+     * @param receitaId ID da receita, para ser utilizada na chave estrangeira da tabela
+     */
     private void setCategorias(Receita receita, Integer receitaId) {
         for (String categoria: receita.getCategorias()) {
             Integer categoriaId = categoriaRepository.saveCategoria(categoria);
@@ -68,7 +78,12 @@ public class ReceitaRepository {
         }
     }
 
-    //Salva os ingredientes, adicionando novos ingredientes à sua tabela quando necessário
+
+    /**
+     * Salva os ingredientes, adicionando novos ingredientes à sua tabela quando necessário
+     * @param receita Instância DTO da receita
+     * @param receitaId ID da receita, para ser utilizada na chave estrangeira da tabela
+     */
     private void setIngredientes(Receita receita, Integer receitaId) {
         for (Ingrediente ingrediente: receita.getIngredientes()) {
             Integer ingredienteId = ingredienteRepository.saveIngrediente(ingrediente.getNome());
@@ -84,7 +99,11 @@ public class ReceitaRepository {
         }
     }
 
-    //Salva os metadados com os seus valores, adicionando os nomes dos metadados em sua tabela quando necessário
+    /**
+     * Salva os metadados com os seus valores, adicionando os nomes dos metadados em sua tabela quando necessário
+     * @param receita Instância DTO da receita
+     * @param receitaId ID da receita, para ser utilizada na chave estrangeira da tabela
+     */
     private void setMetadados(Receita receita, Integer receitaId) {
         for (Metadado metadado: receita.getMetadados()) {
             Integer metadadoId = metadadoRepository.saveMetadado(metadado.getNome());
@@ -99,19 +118,35 @@ public class ReceitaRepository {
         }
     }
 
+    /**
+     * Exclui todas as categorias de uma receita
+     * @param receitaId ID da receita
+     */
     private void deleteCategorias(Integer receitaId) {
         dslContext.deleteFrom(RECEITA_CATEGORIA).where(RECEITA_CATEGORIA.RECEITA_ID.eq(receitaId)).execute();
     }
 
+    /**
+     * Exclui todos os ingredientes de uma receita
+     * @param receitaId ID da receita
+     */
     private void deleteIngredientes(Integer receitaId) {
         dslContext.deleteFrom(RECEITA_INGREDIENTE).where(RECEITA_INGREDIENTE.RECEITA_ID.eq(receitaId)).execute();
     }
 
+    /**
+     * Exclui todos os metadados de uma receita
+     * @param receitaId ID da receita
+     */
     private void deleteMetadados(Integer receitaId) {
         dslContext.deleteFrom(RECEITA_METADADO).where(RECEITA_METADADO.RECEITA_ID.eq(receitaId)).execute();
     }
 
-
+    /**
+     * Retorna uma receita a partir do número do ID
+     * @param receitaId ID da receita a ser recuperada no banco de dados
+     * @return Instância (DTO) da receita
+     */
     public Receita getById(Integer receitaId) {
         Receita receita = new Receita();
 
@@ -183,7 +218,11 @@ public class ReceitaRepository {
     }
 
 
-    //Retorna uma lista de receitas filtrada pelo parâmetro filter
+    /**
+     * Retorna uma lista de receitas selecionadas a partir de um filtro
+     * @param filter Instância (DTO) do filtro
+     * @return Lista de instâncias de receitas
+     */
     public List<Receita> getByFilter(ReceitaFilter filter) {
         SelectWhereStep query = dslContext.
                                     selectDistinct(RECEITA.ID)
@@ -240,6 +279,11 @@ public class ReceitaRepository {
         return receitas;
     }
 
+    /**
+     * Modifica uma receita a partir de um patch. Campos nulos indicam campos que não serão alterados.
+     * @param partialReceita Instância de uma receita, contendo apenas os campos a serem modificados
+     * @param receitaId ID da receita a ser alterada
+     */
     public void patchReceita(Receita partialReceita, Integer receitaId) {
         //Dados da tabela 'Receitas'
         ReceitaRecord receitaRecord = dslContext.selectFrom(RECEITA).where(RECEITA.ID.eq(receitaId)).fetchAny();
@@ -274,7 +318,11 @@ public class ReceitaRepository {
         }
     }
 
-
+    /**
+     * Altera completamente uma receita. Campos definidos como nulo são interpretados como campos a serem apagados.
+     * @param receita Instância DTO da receita
+     * @param receitaId ID da receita a ser alterada
+     */
     public void putReceita(Receita receita, Integer receitaId) {
         //Dados da tabela 'Receitas'
         ReceitaRecord receitaRecord = dslContext.selectFrom(RECEITA).where(RECEITA.ID.eq(receitaId)).fetchAny();
@@ -295,6 +343,10 @@ public class ReceitaRepository {
         setIngredientes(receita, receitaId);
     }
 
+    /**
+     * Exclui uma receita do banco de dados
+     * @param receitaId ID da receita a ser excluída
+     */
     public void deleteReceita(Integer receitaId) {
         deleteCategorias(receitaId);
         deleteMetadados(receitaId);
